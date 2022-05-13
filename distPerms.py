@@ -1,5 +1,5 @@
 # Input: a string with only capital English letters
-# Task: print all distinct permutations of this string
+# Task: return a list of all distinct permutations of this string
 
 
 def distPerms(line):
@@ -42,6 +42,4 @@ def distPerms(line):
             return buildup
 
     tally = {c: line.count(c) for c in set(line)}
-    # return distPermsHelper(tally)
-    for p in distPermsHelper(tally):
-        print(p)
+    return distPermsHelper(tally)

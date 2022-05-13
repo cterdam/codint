@@ -1,5 +1,5 @@
 # Input: a string with only English letters and whitespace
-# Task: capitalize vowels and decapitalize consonants in the string
+# Task: return the string with vowels capitalized and consonants decapitalized
 
 def vowel(line):
     vowels = ('a', 'e', 'i', 'o', 'u')

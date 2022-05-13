@@ -1,5 +1,5 @@
 # Input: a string with only capital English letters
-# Task: compute the number of distinct permutations of this string.
+# Task: return the number of distinct permutations of this string
 
 import math
 

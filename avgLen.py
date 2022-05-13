@@ -1,5 +1,5 @@
 # Input: a string with only English letters and whitespace
-# Task: compute the average word length of this string
+# Task: return the average word length of this string
 
 def avgLen(line):
     linesplit = line.split()
