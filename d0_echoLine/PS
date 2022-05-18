@@ -1,0 +1,11 @@
+echoLine
+
+Input:
+    One or more lines separared by '\n'
+
+Task:
+    Print the first line and exit.
+
+Example:
+    Input: 'Hello!\nGoodbye!\n'
+    Output: 'Hello!\n'

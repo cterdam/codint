@@ -85,7 +85,7 @@ def tallySols(workDir, pName, exts):
     return extFreq
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def dirInfo():
     """
     Gathers various info about the current working directory.
@@ -93,11 +93,11 @@ def dirInfo():
     Returns:
         (str) workDir: Path of current working directory, the dir containing
             material for this problem. When this script is a soft link, the
-            dir contains the link and not its target.
-            Example: '/Users/sterdam/cterdam/playground/avgLen'
+            dir is parent to the link and not its target.
+            Example: '/Users/sterdam/cterdam/playground/d0_avgLen'
         (str) testDir: Path of directory containing all tests for this
             problem.
-            Example: '/Users/sterdam/cterdam/playground/avgLen/tests'
+            Example: '/Users/sterdam/cterdam/playground/d0_avgLen/tests'
         (str) pName: Name of this problem.
             Example: 'traverseBST'
         (int) testCount: Number of test cases found in testDir. See countTests
@@ -109,7 +109,7 @@ def dirInfo():
     """
     workDir = os.path.dirname(os.path.abspath(__file__))
     testDir = workDir + '/tests'
-    pName = os.path.basename(workDir)
+    pName = re.sub(r'd\d_', '', os.path.basename(workDir))
     testCount = countTests(testDir)
     exts = {'c', 'cs', 'py'}
     extFreq = tallySols(workDir, pName, exts)
