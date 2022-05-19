@@ -1,6 +1,3 @@
-# Input: a string with only English letters
-# Task: print all permutations of this string
-
 def perms(line):
 
     def permsHelper(l, lo, hi):
@@ -13,3 +10,7 @@ def perms(line):
                 l[lo], l[i] = l[i], l[lo]
 
     permsHelper(list(line), 0, len(line))
+
+
+if __name__ == '__main__':
+    perms(input())
