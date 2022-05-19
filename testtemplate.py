@@ -194,16 +194,17 @@ def test_simplC(capfd, dirInfo):
 
     # Skip the test if no .c file is found
     ext = 'c'
+    pName = dirInfo[2]
     solCount = dirInfo[4][ext]
     if solCount <= 0:
-        pytest.skip('No .' + ext + ' file found')
+        pytest.skip('No .' + ext + ' file found for ' + pName)
 
     # Prepare flags
     flags = dirInfo[5]
     sortOut = ' | sort' if '-anyOrder' in flags else ''
 
     # For all solutions, run through all tests
-    for sol in genSols(dirInfo[0], dirInfo[2], ext, solCount):
+    for sol in genSols(dirInfo[0], pName, ext, solCount):
         compileDest = sol.replace('.', '_')
         os.system('gcc ' + sol + ' -o ' + compileDest)
         for thisIn, thisOut in genTests(dirInfo[1], dirInfo[3]):
@@ -219,9 +220,10 @@ def test_simplC(capfd, dirInfo):
 
 def test_CSharp(capfd, dirInfo):
     ext = 'cs'
+    pName = dirInfo[2]
     solCount = dirInfo[4][ext]
     if solCount <= 0:
-        pytest.skip('No .' + ext + ' file found')
+        pytest.skip('No .' + ext + ' file found for ' + pName)
 
 
 def test_Python(capfd, dirInfo):
@@ -231,16 +233,17 @@ def test_Python(capfd, dirInfo):
 
     # Skip the test if no .c file is found
     ext = 'py'
+    pName = dirInfo[2]
     solCount = dirInfo[4][ext]
     if solCount <= 0:
-        pytest.skip('No .' + ext + ' file found')
+        pytest.skip('No .' + ext + ' file found for ' + pName)
 
     # Prepare flags
     flags = dirInfo[5]
     sortOut = ' | sort' if '-anyOrder' in flags else ''
 
     # For all solutions, run through all tests
-    for sol in genSols(dirInfo[0], dirInfo[2], ext, solCount):
+    for sol in genSols(dirInfo[0], pName, ext, solCount):
         for thisIn, thisOut in genTests(dirInfo[1], dirInfo[3]):
             capfd.readouterr()
             os.system('cat ' + thisIn + ' | python3 ' + sol + sortOut)
