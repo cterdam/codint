@@ -14,19 +14,18 @@ def countTests(testDir):
     """
     Count the number of test cases in testDir.
 
-    A valid test case is a pair of files 'in[n]' and 'out[n]', no filename
+    A valid test case is a pair of files 't[n]-in' and 't[n]-out', no filename
     extension. For instance, 'in5' and 'out5' is a valid test case. In this
     directory, the numbering must start from 1.
 
     Params:
         (str) testDir: Path of directory containing valid test cases to count.
-            It must not contain any other file than named 'in[n]' or 'out[n]'.
 
     Returns:
-        (int) The largest numbering found in test files named 'in' or 'out'.
+        (int) The largest numbering found in test files named properly.
 
     Example1:
-        testDir contains: 'in1', 'out1', 'in2', 'out2'
+        testDir contains: 't1-in', 't1-out', 't2-in', 't2-out'
         Returns: 2
     Example2:
         testDir is empty
@@ -34,11 +33,11 @@ def countTests(testDir):
     """
     testCount = 0
     for fileName in os.listdir(testDir):
-        baseName = fileName.replace('in', '').replace('out', '')
-        if baseName.isdigit():
-            currTestNum = int(baseName)
-            if currTestNum > testCount:
-                testCount = currTestNum
+        testMatch = re.match(r't(\d+)-(in|out)', fileName)
+        if testMatch:
+            testID = int(testMatch.group(1))
+            if testID > testCount:
+                testCount = testID
     return testCount
 
 
@@ -85,7 +84,34 @@ def tallySols(workDir, pName, exts):
     return extFreq
 
 
-@pytest.fixture(scope='function')
+def readFlags(workDir):
+    """
+    Reads flags from the problem statement file in the working directory.
+
+    All flags are stored in the 2nd line of the PS file. If there are no
+    flags, the 2nd line is empty.
+
+    Params:
+        (str) workDir: Path of directory containing the problem statement
+
+    Returns:
+        (str*) A set containing all flags read from the problem statement.
+
+    Example1:
+        2nd line from workDir/PS.md is: ''
+        Returns: set()
+    Example2:
+        2nd line from workDir/PS.md is: '-anyOrder'
+        Returns: {-anyOrder}
+
+    """
+    with open(workDir + '/PS.md', 'r') as psFile:
+        psFile.readline()
+        flagLine = psFile.readline()
+        return set(flagLine.split())
+
+
+@ pytest.fixture(scope='module')
 def dirInfo():
     """
     Gathers various info about the current working directory.
@@ -98,7 +124,7 @@ def dirInfo():
         (str) testDir: Path of directory containing all tests for this
             problem.
             Example: '/Users/sterdam/cterdam/playground/d0_avgLen/tests'
-        (str) pName: Name of this problem.
+        (str) pName: Name of this problem, without the difficulty mark.
             Example: 'traverseBST'
         (int) testCount: Number of test cases found in testDir. See countTests
             for definition of valid test cases.
@@ -106,14 +132,18 @@ def dirInfo():
             extFreq[k] is the number of valid solution files of extension k
             found in workDir. See tallySols for definition of valid solution
             files.
+        (str*) flags: Set of flag strings found in the problem statement.
+            Example: {-anyOrder}
     """
     workDir = os.path.dirname(os.path.abspath(__file__))
     testDir = workDir + '/tests'
-    pName = re.sub(r'd\d_', '', os.path.basename(workDir))
+    pName = re.sub(r'^d\d_', '', os.path.basename(workDir))
     testCount = countTests(testDir)
     exts = {'c', 'cs', 'py'}
     extFreq = tallySols(workDir, pName, exts)
-    yield workDir, testDir, pName, testCount, extFreq
+    flags = readFlags(workDir)
+
+    yield workDir, testDir, pName, testCount, extFreq, flags
 
     # Cleanup
     os.system('rm -rf ' + workDir + '/__pycache__')
@@ -152,8 +182,8 @@ def genTests(testDir, testCount):
         ( -> (str, str)) Generator for all valid test cases in this path.
     """
     for testNum in range(1, testCount+1):
-        thisIn = testDir + '/in' + str(testNum)
-        thisOut = testDir + '/out' + str(testNum)
+        thisIn = testDir + '/t' + str(testNum) + '-in'
+        thisOut = testDir + '/t' + str(testNum) + '-out'
         yield thisIn, thisOut
 
 
@@ -161,19 +191,26 @@ def test_C(capfd, dirInfo):
     """
     Test all .c solutions for this problem.
     """
+
     # Skip the test if no .c file is found
     ext = 'c'
     solCount = dirInfo[4][ext]
     if solCount <= 0:
         pytest.skip('No .' + ext + ' file found')
+
+    # Prepare flags
+    flags = dirInfo[5]
+    sortOut = ' | sort' if '-anyOrder' in flags else ''
+
     # For all solutions, run through all tests
     for sol in genSols(dirInfo[0], dirInfo[2], ext, solCount):
         compileDest = sol.replace('.', '_')
-        os.system('clang ' + sol + ' -o ' + compileDest)
+        os.system('gcc ' + sol + ' -o ' + compileDest)
         for thisIn, thisOut in genTests(dirInfo[1], dirInfo[3]):
-            os.system('cat ' + thisIn + ' | ' + compileDest)
+            capfd.readouterr()
+            os.system('cat ' + thisIn + ' | ' + compileDest + sortOut)
             thisSolOut, thisSolErr = capfd.readouterr()
-            os.system('cat ' + thisOut)
+            os.system('cat ' + thisOut + sortOut)
             thisRefOut, thisRefErr = capfd.readouterr()
             assert thisSolOut == thisRefOut
             assert thisSolErr == thisRefErr
@@ -191,17 +228,24 @@ def test_Python(capfd, dirInfo):
     """
     Test all .py solutions for this problem.
     """
+
     # Skip the test if no .c file is found
     ext = 'py'
     solCount = dirInfo[4][ext]
     if solCount <= 0:
         pytest.skip('No .' + ext + ' file found')
+
+    # Prepare flags
+    flags = dirInfo[5]
+    sortOut = ' | sort' if '-anyOrder' in flags else ''
+
     # For all solutions, run through all tests
     for sol in genSols(dirInfo[0], dirInfo[2], ext, solCount):
         for thisIn, thisOut in genTests(dirInfo[1], dirInfo[3]):
-            os.system('cat ' + thisIn + ' | python3 ' + sol)
+            capfd.readouterr()
+            os.system('cat ' + thisIn + ' | python3 ' + sol + sortOut)
             thisSolOut, thisSolErr = capfd.readouterr()
-            os.system('cat ' + thisOut)
+            os.system('cat ' + thisOut + sortOut)
             thisRefOut, thisRefErr = capfd.readouterr()
             assert thisSolOut == thisRefOut
             assert thisSolErr == thisRefErr
