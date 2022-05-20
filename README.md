@@ -8,8 +8,8 @@ pick up new programming languages quickly!
 
 ## Requirements
 
-- `python3` and `pytest` to run any tests
-- The command `gcc` must invoke a C compiler if you want to test C code
+- `python3` and `pytest` are required to run tests.
+- If you want to test C code, the command `gcc` must invoke a C compiler.
   - On macOS, `gcc` invokes clang by default. This also works.
 
 ## How to Use
@@ -31,7 +31,7 @@ bash setup.sh clear && bash setup.sh distribute
 Now, run `pytest -slv` to run a diagnosis of all existing coding problems and
 test exising solutions for each problem.
 
-### Read a problem
+### Read a Problem
 
 `cd` into any of the top-level directories. Inside you will find
 subdirectories each named `d[x]_[pName]`, where `[x]` is the difficulty rating
@@ -42,7 +42,7 @@ problem. Each of these contains material for a programming problem.
 
 `cd` into one of these. Read `PS.md` for the problem statement.
 
-### Write a solution
+### Write Solutions
 
 Write a solution to the problem as described in the `PS.md` writeup. You can
 write in any of the [supported languages](#supported-languages). Your solution
@@ -69,8 +69,8 @@ difficulty rating), and `[suffix]` is that of your programming language.
 Your solution should read all input from `stdin`. By default any single-line
 input will be postfixed with a newline character.
 
-Your solution should write all output to `stdout`. Make sure the end of the output contains a
-newline character.
+Your solution should write all output to `stdout`. Make sure the end of the
+output contains a newline character.
 
 ### Test Solutions
 
