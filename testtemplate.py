@@ -187,7 +187,7 @@ def genTests(testDir, testCount):
         yield thisIn, thisOut
 
 
-def test_simplC(capfd, dirInfo):
+def test_C(capfd, dirInfo):
     """
     Test all .c solutions for this problem.
     """
