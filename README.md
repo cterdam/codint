@@ -107,10 +107,16 @@ compilation and clearance of the compiled executable after testing finishes.
 
 ### Supported Languages
 
+The following language-specific requirements are only required if you plan to
+write and test code in that language.
+
 - Python3
 - C
-  - If you want to test C code, the command `gcc` must invoke a C compiler.
+  - `gcc` must invoke a C compiler.
   - On macOS, `gcc` invokes clang by default. This also works.
+- C#
+  - `mcs` must invoke a C# compiler, and `mono` must invoke a C# runtime.
+  - These can be installed with the `mono` package.
 
 ### Supported Flags
 
