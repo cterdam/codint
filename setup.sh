@@ -1,3 +1,9 @@
+# Use `distribute` to distribute the master test script as symlink to all
+# (arbitrarily unequally/deeply nested) problem directories.
+
+# Use `clear` to delete all such symlinks found according to naming
+# convention.
+
 iterate () {
     currDir=$1
     testTemplate=$2
