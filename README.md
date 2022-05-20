@@ -8,9 +8,7 @@ pick up new programming languages quickly!
 
 ## Requirements
 
-- `python3` and `pytest` are required to run tests.
-- If you want to test C code, the command `gcc` must invoke a C compiler.
-  - On macOS, `gcc` invokes clang by default. This also works.
+- `python3` and `pytest`
 
 ## How to Use
 
@@ -109,8 +107,10 @@ compilation and clearance of the compiled executable after testing finishes.
 
 ### Supported Languages
 
-- C
 - Python3
+- C
+  - If you want to test C code, the command `gcc` must invoke a C compiler.
+  - On macOS, `gcc` invokes clang by default. This also works.
 
 ### Supported Flags
 
