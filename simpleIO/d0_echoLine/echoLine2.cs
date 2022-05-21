@@ -1,5 +1,7 @@
-class echoLine {
-    static void Main() {
+class echoLine
+{
+    static void Main()
+    {
         System.Console.WriteLine(System.Console.ReadLine());
     }
 }
