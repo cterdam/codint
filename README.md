@@ -51,7 +51,7 @@ difficulty rating), and `[suffix]` is that of your programming language.
 - If the problem directory is `d1_traverseBST` and you decide to write C code,
   your solution should be called `traverseBST.c`.
 
-- If a solution already exists, just delete it. It's in the repo, anyways.
+- If a solution already exists, just delete it. It's in repo history, anyways.
 
 - If you write multiple solutions, starting with the second solution you may
   append a number after `pName`. e.g. `traverseBST2.c`, `traverseBST3.c`.
