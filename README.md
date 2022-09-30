@@ -135,6 +135,11 @@ of test case if there's no 8th yet.
 It is advisable to put easier test cases first (in smaller numbers) as the
 test script tests them in increasing order.
 
+Notice that input strings must end with `"\n"`. For a test case input to be an
+empty string, do not simply create an empty file. Make sure that there is a
+newline character. In vim this can be done by inserting a new line, and
+deleting the second line with `dd`.
+
 ### Adding new programming problems
 
 In an appropriate category directory, create a sub-directory to host the new
@@ -162,11 +167,15 @@ In the new problem directory, make sure there is:
 - `tests/`: A directory to host the test cases. This is required for the setup
   script to recognize this directory as a problem directory.
 
+  - For things to keep in mind while designing test cases, see
+  [Adding new test cases for an existing
+  problem](#adding-new-test-cases-for-an-existing-problem).
+
 When the directory is prepared, go to the repo's root, and run `bash setup.sh
 distribute` to redistribute the test script symlink:
 
 Now run `pytest -slv` and confirm that the new programming problem is included
-in all problems.
+in the list of all problems.
 
 ### Adding support for new programming languages
 
