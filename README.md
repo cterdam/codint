@@ -138,7 +138,8 @@ test script tests them in increasing order.
 Notice that input strings must end with `"\n"`. For a test case input to be an
 empty string, do not simply create an empty file. Make sure that there is a
 newline character. In vim this can be done by inserting a new line, and
-deleting the second line with `dd`.
+deleting the second line with `dd`. This step is not necessary for non-empty
+strings.
 
 ### Adding new programming problems
 
