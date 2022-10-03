@@ -256,7 +256,7 @@ def test_Python(capfd, dirInfo):
     Test all .py solutions for this problem.
     """
 
-    # Skip the test if no .c file is found
+    # Skip the test if no .py file is found
     ext = 'py'
     pName = dirInfo[2]
     solCount = dirInfo[4][ext]
