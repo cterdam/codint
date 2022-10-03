@@ -199,11 +199,16 @@ extension yet, it should display relevant tests as 'SKIPPED'.
 
 Flags are parsed in the `readFlags(workDir)` function in `testtemplate.py`,
 and are passed to individual `test_languageName` functions to influence
-specific test routines.  Add customized compile/test commands there, or
-elsewhere as seen fit.  Be sure to expand every language-specific test
-function to account for the new flag.
+specific test routines. Add customized compile/test commands there, or
+elsewhere as seen fit. Be sure to expand every language-specific test function
+to account for the new flag.
 
 ### Other functionalities to contribute
 
 - List language-specific and problem-specific stats (How many problems are
   solved in this many languages?) Look into `setup.sh`.
+
+- Package boilerplate testing function for each language, shortening each
+  testing function
+
+- Allow different solutions and test cases to carry textual names
