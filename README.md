@@ -212,3 +212,5 @@ to account for the new flag.
   testing function
 
 - Allow different solutions and test cases to carry textual names
+
+- Remove symlinks from repo, add to gitignore, and update use instructions
